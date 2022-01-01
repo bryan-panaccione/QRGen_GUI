@@ -48,11 +48,6 @@ def pickAPath():
 url_var = tk.StringVar()
 
 
-def getURL():
-    global inputURL
-    inputURL = url_var.get()
-
-
 # get the name they want to save it as
 name_var = tk.StringVar()
 
@@ -90,8 +85,6 @@ def workingQR(inputURL, nameSave):
     checkPath = pathlib.Path(f'{file_path}/My_QRcodes')
     checkPrevious = pathlib.Path(
         f'{file_path}/{nameSave}{random8}.png')
-    if checkPrevious.exists():
-        random8 = random8 + '(002)'
     if checkPath.exists():
         img.save(f"{file_path}/My_QRcodes/{nameSave}{random8}.png", quality=100)
     else:

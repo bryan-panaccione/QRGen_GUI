@@ -47,6 +47,15 @@ customLogo.place(relx=0.395, rely=0.65)
 #####################################################################
 # TAB 1 Elements and Functions
 #####################################################################
+# Select Center Logo
+logo_choice = StringVar(tab1, "1")
+choices = {"Tiger Symbol": '1', "3CR Bug": '2', "Sabres": '3', "None": '4'}
+countRadios = 0.2
+
+for (text, value) in choices.items():
+    Radiobutton(tab1, text=text, variable=logo_choice,
+                value=value).place(relx=0.7, rely=countRadios)
+    countRadios = countRadios + 0.075
 
 
 class pathLabelControl:
@@ -68,11 +77,19 @@ def pickAPath():
     showpath.adderPath()
 
 
-def generateQR(inputURL, nameSave):
+def generateQR(inputURL, nameSave, chosenLogo):
     # tack-on 8 digit unique identifier
     random8 = random.randint(00000000, 99999999)
+    # get radio button logo selection
+    if (chosenLogo == '1'):
+        logo = PIL.Image.open(
+            r'C:\Users\Owner\Documents\PythonDemos\tigerLogo.png')
+    if (chosenLogo == '2'):
+        logo = PIL.Image.open(
+            r'C:\Users\Owner\Documents\PythonDemos\tinyLogo.png')
+    # this method works, for none, figure out if easy to bypass steps or make image a black square
     # resize logo
-    logo = PIL.Image.open(r'C:\Users\Owner\Pictures\tinyLogo.jpg')
+    #logo = PIL.Image.open(r'C:\Users\Owner\Documents\PythonDemos\tigerLogo.png')
     basewidth = 50
     wpercent = (basewidth / float(logo.size[0]))
     hsize = int((float(logo.size[1])*float(wpercent)))
@@ -101,6 +118,7 @@ def generateQR(inputURL, nameSave):
         img.save(f"{file_path}/My_QRcodes/{nameSave}_{random8}.png", quality=100)
     img.show()
     print(f"Successful QR Code Creation,  Image saved to: {file_path}")
+    print(logo_choice)
 
 
 # required to get input information in correct format
@@ -109,9 +127,10 @@ name_var = tk.StringVar()
 
 
 def create():
+    chosenLogo = logo_choice.get()
     nameSave = name_var.get()
     inputURL = url_var.get()
-    generateQR(inputURL, nameSave)
+    generateQR(inputURL, nameSave, chosenLogo)
     url_input.delete(0, END)
     save_input.delete(0, END)
     showpath.removerPath()
@@ -130,6 +149,7 @@ page_label = Label(tab1, text="Create a New QR Code",
 url_label = Label(tab1, text="QR Code links to:", font=("Arial", 16))
 save_label = Label(tab1, text="Save QR Code As:", font=("Arial", 16))
 path_label = Label(tab1, text="Local Save Location:", font=("Arial", 16))
+radio_label = Label(tab1, text="Add Logo", font=("Cooper Black", 16))
 courtesyOf = Label(
     tab1, text="Created by CPT Bryan Panaccione, to resolve problems with this software, email bp@rqpcreative.com", font=("Bradley Hand ITC", 12))
 # Create Button, takes all input data
@@ -146,6 +166,7 @@ save_input.place(relx=0.4, rely=0.3)
 path_browse.place(relx=0.43, rely=0.4)
 createQR_btn.place(relx=0.43, rely=0.55)
 courtesyOf.place(relx=0, rely=0.95)
+radio_label.place(relx=0.7, rely=0.13)
 
 #####################################################################
 # TAB 2 Elements and Functions
